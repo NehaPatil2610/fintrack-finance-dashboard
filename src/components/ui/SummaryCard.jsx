@@ -16,7 +16,7 @@ export function SummaryCard({ title, value, subtitle, variant = 'balance' }) {
 
   return (
     <div
-      className={`rounded-xl border bg-gradient-to-br p-4 shadow-sm transition-shadow hover:shadow-md md:p-5 ${styles[variant]}`}
+      className={`h-full w-full rounded-xl border bg-gradient-to-br p-4 shadow-sm transition-shadow hover:shadow-md md:p-5 ${styles[variant]}`}
     >
       <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
         {title}

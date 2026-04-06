@@ -19,12 +19,13 @@ function formatMoney(n) {
 function BalanceTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null
   const value = payload[0]?.value
+
   return (
     <div className="rounded-xl border border-slate-200/70 bg-white/85 px-4 py-3 shadow-2xl backdrop-blur-md dark:border-slate-600/60 dark:bg-slate-900/90">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {label}
       </p>
-      <p className="mt-1 text-lg font-semibold tabular-nums tracking-tight text-slate-900 dark:text-white">
+      <p className="mt-1 text-lg font-semibold tracking-tight tabular-nums text-slate-900 dark:text-white">
         {formatMoney(value)}
       </p>
       <p className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
@@ -39,7 +40,7 @@ export function BalanceTrendChart({ data }) {
 
   if (!data?.length) {
     return (
-      <div className="flex h-[280px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
+      <div className="flex h-[280px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
         Not enough data to plot balance trend.
       </div>
     )

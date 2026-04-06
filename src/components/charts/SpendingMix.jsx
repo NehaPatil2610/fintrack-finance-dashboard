@@ -16,12 +16,13 @@ function DonutTooltip({ active, payload }) {
   const row = payload[0]
   const name = row?.name ?? row?.payload?.name
   const value = row?.value
+
   return (
     <div className="px-1 py-0.5">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {name}
       </p>
-      <p className="mt-1 text-lg font-semibold tabular-nums tracking-tight text-slate-900 dark:text-white">
+      <p className="mt-1 text-lg font-semibold tracking-tight tabular-nums text-slate-900 dark:text-white">
         {formatMoney(value)}
       </p>
       <p className="text-xs font-medium text-rose-600 dark:text-rose-400">Expense</p>
@@ -30,7 +31,7 @@ function DonutTooltip({ active, payload }) {
 }
 
 export function SpendingMix({ data }) {
-  const [isHovered, setIsHovered] = useState(false)
+  const [showCenterText, setShowCenterText] = useState(true)
   const totalExpenses = useMemo(
     () => data.reduce((sum, d) => sum + d.value, 0),
     [data],
@@ -38,14 +39,14 @@ export function SpendingMix({ data }) {
 
   if (!data?.length) {
     return (
-      <div className="flex h-[280px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
+      <div className="flex h-[280px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
         No expense data in the current filter.
       </div>
     )
   }
 
   return (
-    <div className="w-full">
+    <div className="flex h-full w-full flex-col">
       <div className="relative mx-auto h-[248px] w-full max-w-[320px] md:h-[268px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -59,8 +60,8 @@ export function SpendingMix({ data }) {
               outerRadius="90%"
               paddingAngle={5}
               cornerRadius={10}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseEnter={() => setShowCenterText(false)}
+              onMouseLeave={() => setShowCenterText(true)}
             >
               {data.map((_, i) => (
                 <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
@@ -80,7 +81,8 @@ export function SpendingMix({ data }) {
           </PieChart>
         </ResponsiveContainer>
         <div
-          className={`pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center transition-opacity duration-150 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+          className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center transition-opacity duration-150"
+          style={{ opacity: showCenterText ? 1 : 0 }}
         >
           <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Total Expenses

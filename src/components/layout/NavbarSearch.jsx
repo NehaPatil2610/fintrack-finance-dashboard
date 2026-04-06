@@ -1,15 +1,10 @@
 import { Search, X } from 'lucide-react'
 import { useFinanceStore } from '../../store/useFinanceStore'
 
-export function NavbarSearch({ id = 'global-search', variant = 'desktop' }) {
+export function NavbarSearch({ id = 'global-search' }) {
   const searchQuery = useFinanceStore((s) => s.searchQuery)
   const setSearch = useFinanceStore((s) => s.setSearch)
   const hasValue = searchQuery.trim().length > 0
-  const isMobile = variant === 'mobile'
-
-  const inputClassName = isMobile
-    ? 'w-full rounded-xl border-0 bg-slate-100 py-3 pl-10 pr-10 text-sm text-slate-900 outline-none ring-indigo-500/25 placeholder:text-slate-400 focus:ring-2 dark:bg-slate-800 dark:text-slate-100'
-    : 'w-full rounded-lg border-0 bg-slate-100 py-2 pl-10 pr-10 text-sm text-slate-900 outline-none ring-indigo-500/25 placeholder:text-slate-400 focus:ring-2 dark:bg-slate-800 dark:text-slate-100'
 
   return (
     <div className="relative min-w-0 w-full">
@@ -26,8 +21,8 @@ export function NavbarSearch({ id = 'global-search', variant = 'desktop' }) {
         type="search"
         value={searchQuery}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder={isMobile ? 'Search...' : 'Search merchant, category...'}
-        className={inputClassName}
+        placeholder="Search merchant, category..."
+        className="w-full rounded-xl border-0 bg-slate-100 py-3 pl-10 pr-10 text-sm text-slate-900 outline-none ring-indigo-500/25 placeholder:text-slate-400 focus:ring-2 dark:bg-slate-800 dark:text-slate-100 sm:rounded-lg sm:py-2.5"
       />
       {hasValue ? (
         <button

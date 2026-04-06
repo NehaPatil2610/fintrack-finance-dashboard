@@ -5,7 +5,7 @@ export function TransactionFilters() {
   const setFilter = useFinanceStore((s) => s.setFilter)
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+    <div className="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
         Type
         <select
@@ -19,7 +19,8 @@ export function TransactionFilters() {
         </select>
       </label>
       <p className="text-xs text-slate-500 dark:text-slate-400">
-        Navbar search matches merchant, category, and type—same filter as charts.
+        Navbar search matches merchant, category, and type across the same
+        Transactions dataset.
       </p>
     </div>
   )

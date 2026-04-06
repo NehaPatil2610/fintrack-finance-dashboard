@@ -1,7 +1,7 @@
 import { Inbox, SearchX } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { useFinanceStore } from '../../store/useFinanceStore'
 import { useFilteredTransactions } from '../../hooks/useFilteredTransactions'
+import { useFinanceStore } from '../../store/useFinanceStore'
 import { AdminOnly } from '../ui/AdminOnly'
 import { TransactionRow } from './TransactionRow'
 
@@ -30,13 +30,14 @@ function PaginatedTableBody({
         sortBy: field,
         sortDir: filter.sortDir === 'asc' ? 'desc' : 'asc',
       })
-    } else {
-      setFilter({ sortBy: field, sortDir: field === 'date' ? 'desc' : 'desc' })
+      return
     }
+
+    setFilter({ sortBy: field, sortDir: 'desc' })
   }
 
   const sortIcon = (field) =>
-    filter.sortBy === field ? (filter.sortDir === 'asc' ? '↑' : '↓') : ''
+    filter.sortBy === field ? (filter.sortDir === 'asc' ? '^' : 'v') : ''
 
   function handleDelete(tx) {
     if (
@@ -45,12 +46,13 @@ function PaginatedTableBody({
     ) {
       return
     }
+
     deleteTransaction(tx.id)
   }
 
   return (
     <div className="space-y-4">
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
           <thead className="bg-slate-50/80 dark:bg-slate-800/50">
             <tr>
@@ -111,10 +113,8 @@ function PaginatedTableBody({
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Showing{' '}
           <span className="font-medium text-slate-700 dark:text-slate-200">
-            {visible.length === 0
-              ? 0
-              : (currentPage - 1) * PAGE_SIZE + 1}
-            –
+            {visible.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1}
+            {' - '}
             {Math.min(currentPage * PAGE_SIZE, visible.length)}
           </span>{' '}
           of {visible.length}
@@ -165,7 +165,7 @@ export function TransactionTable({ onEdit }) {
 
   if (!transactions.length) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10 text-center dark:border-slate-700 dark:from-slate-900 dark:to-slate-950">
+      <div className="w-full rounded-2xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10 text-center dark:border-slate-700 dark:from-slate-900 dark:to-slate-950">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
           <Inbox className="h-7 w-7" strokeWidth={1.75} aria-hidden />
         </div>
@@ -183,16 +183,16 @@ export function TransactionTable({ onEdit }) {
 
   if (!visible.length) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10 text-center dark:border-slate-700 dark:from-slate-900 dark:to-slate-950">
+      <div className="w-full rounded-2xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white p-10 text-center dark:border-slate-700 dark:from-slate-900 dark:to-slate-950">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-600 dark:bg-rose-500/15 dark:text-rose-400">
           <SearchX className="h-7 w-7" strokeWidth={1.75} aria-hidden />
         </div>
         <h3 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
           No transactions found
         </h3>
-        <p className="mt-2 max-w-md mx-auto text-sm text-slate-500 dark:text-slate-400">
-          Nothing matches your search or filters. Try another keyword (e.g. a
-          category like Shopping) or clear filters to see everything again.
+        <p className="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
+          Nothing matches your search or filters. Try another keyword, such as
+          Shopping, or clear filters to see everything again.
         </p>
         <button
           type="button"
