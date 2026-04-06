@@ -46,6 +46,10 @@ export function Dashboard() {
     () => getCategoryExpenseBreakdown(dataset),
     [dataset],
   )
+  const totalCategoryExpense = useMemo(
+    () => categoryData.reduce((sum, category) => sum + category.value, 0),
+    [categoryData],
+  )
 
   const insights = useMemo(() => getInsights(dataset), [dataset])
 
@@ -74,7 +78,7 @@ export function Dashboard() {
 
   return (
     <>
-      <main className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 gap-6 overflow-x-hidden p-6 md:grid-cols-2 lg:grid-cols-3">
+      <main className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 gap-6 overflow-x-hidden px-6 py-6 md:grid-cols-2 lg:grid-cols-3">
         <section id="overview" className="scroll-mt-28 md:col-span-2 lg:col-span-3">
           <div className="w-full rounded-3xl border border-slate-200/80 bg-gradient-to-br from-white via-white to-indigo-50/80 p-6 shadow-sm dark:border-slate-800 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900/80 md:p-8">
             <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
@@ -90,24 +94,28 @@ export function Dashboard() {
           </div>
         </section>
 
-        <SummaryCard
-          title="Balance"
-          value={formatCurrency(calc.balance)}
-          subtitle="Filtered dataset"
-          variant="balance"
-        />
-        <SummaryCard
-          title="Income"
-          value={formatCurrency(calc.income)}
-          subtitle="Filtered inflows"
-          variant="income"
-        />
-        <SummaryCard
-          title="Expenses"
-          value={formatCurrency(calc.expense)}
-          subtitle="Filtered outflows"
-          variant="expense"
-        />
+        <section className="md:col-span-2 lg:col-span-3">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <SummaryCard
+              title="Balance"
+              value={formatCurrency(calc.balance)}
+              subtitle="Filtered dataset"
+              variant="balance"
+            />
+            <SummaryCard
+              title="Income"
+              value={formatCurrency(calc.income)}
+              subtitle="Filtered inflows"
+              variant="income"
+            />
+            <SummaryCard
+              title="Expenses"
+              value={formatCurrency(calc.expense)}
+              subtitle="Filtered outflows"
+              variant="expense"
+            />
+          </div>
+        </section>
 
         {hasNoSearchResults ? (
           <section id="charts" className="scroll-mt-28 md:col-span-2 lg:col-span-3">
@@ -147,10 +155,24 @@ export function Dashboard() {
 
             <section className="md:col-span-2 lg:col-span-1">
               <div className="flex h-full w-full flex-col rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 md:p-6">
-                <SectionHeader
-                  title="Spending mix"
-                  description="Expense categories from the filtered dataset."
-                />
+                <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white md:text-xl">
+                      Spending mix
+                    </h2>
+                    <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
+                      Expense categories from the filtered dataset.
+                    </p>
+                  </div>
+                  <div className="self-end rounded-xl bg-slate-50 px-4 py-3 text-right dark:bg-slate-800/70 sm:self-auto">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                      Total expenses
+                    </p>
+                    <p className="mt-1 text-lg font-semibold tracking-tight tabular-nums text-slate-900 dark:text-white">
+                      {formatCurrency(totalCategoryExpense)}
+                    </p>
+                  </div>
+                </div>
                 <CategorySpendingChart data={categoryData} />
               </div>
             </section>

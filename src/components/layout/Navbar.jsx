@@ -33,11 +33,11 @@ export function Navbar({
           </button>
         </div>
 
-        <div className="order-3 basis-full md:order-2 md:min-w-0 md:flex-1">
+        <div className="order-3 mt-4 basis-full md:order-2 md:mt-0 md:min-w-0 md:flex-1">
           <NavbarSearch id="global-search" />
         </div>
 
-        <div className="order-2 ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:order-3 md:ml-0">
+        <div className="order-2 ml-auto flex shrink-0 items-center gap-4 md:order-3 md:ml-0 md:gap-3">
           <button
             type="button"
             onClick={onToggleDark}

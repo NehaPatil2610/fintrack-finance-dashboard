@@ -1,4 +1,3 @@
-import { useMemo, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 
 /** Curated semantic palette: Teal, Rose, Amber, Violet, Sky */
@@ -31,12 +30,6 @@ function DonutTooltip({ active, payload }) {
 }
 
 export function SpendingMix({ data }) {
-  const [showCenterText, setShowCenterText] = useState(true)
-  const totalExpenses = useMemo(
-    () => data.reduce((sum, d) => sum + d.value, 0),
-    [data],
-  )
-
   if (!data?.length) {
     return (
       <div className="flex h-[280px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
@@ -60,16 +53,22 @@ export function SpendingMix({ data }) {
               outerRadius="90%"
               paddingAngle={5}
               cornerRadius={10}
-              onMouseEnter={() => setShowCenterText(false)}
-              onMouseLeave={() => setShowCenterText(true)}
             >
               {data.map((_, i) => (
                 <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
               ))}
             </Pie>
             <Tooltip
-              coordinate={{ x: 0, y: 0 }}
-              wrapperStyle={{ pointerEvents: 'none', zIndex: 1000 }}
+              wrapperStyle={{
+                pointerEvents: 'none',
+                zIndex: 1000,
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transform: 'translate(0, 0)',
+              }}
               contentStyle={{
                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
                 borderRadius: '12px',
@@ -80,17 +79,6 @@ export function SpendingMix({ data }) {
             />
           </PieChart>
         </ResponsiveContainer>
-        <div
-          className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center transition-opacity duration-150"
-          style={{ opacity: showCenterText ? 1 : 0 }}
-        >
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Total Expenses
-          </p>
-          <p className="text-xl font-bold text-slate-900 dark:text-white">
-            ${totalExpenses.toLocaleString()}
-          </p>
-        </div>
       </div>
       <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-slate-600 dark:text-slate-400">
         {data.map((d, i) => (
